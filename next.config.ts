@@ -22,9 +22,10 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 });
 
 const nextConfig: NextConfig = {
-  experimental: {
-    // Enable server actions
-  },
+  experimental: {},
+  // Acknowledge turbopack presence so Next.js 16 doesn't error when
+  // next-pwa injects a webpack config alongside it.
+  turbopack: {},
   images: {
     remotePatterns: [],
   },

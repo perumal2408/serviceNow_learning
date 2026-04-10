@@ -1,0 +1,202 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/lessons/[slug]",
+      "regex": "^/api/lessons/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/lessons/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/lessons/[slug]/bookmark",
+      "regex": "^/api/lessons/([^/]+?)/bookmark(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/lessons/(?<nxtPslug>[^/]+?)/bookmark(?:/)?$"
+    },
+    {
+      "page": "/api/lessons/[slug]/complete",
+      "regex": "^/api/lessons/([^/]+?)/complete(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/lessons/(?<nxtPslug>[^/]+?)/complete(?:/)?$"
+    },
+    {
+      "page": "/learn/[categorySlug]/[topicSlug]/[snippetSlug]",
+      "regex": "^/learn/([^/]+?)/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPcategorySlug": "nxtPcategorySlug",
+        "nxtPtopicSlug": "nxtPtopicSlug",
+        "nxtPsnippetSlug": "nxtPsnippetSlug"
+      },
+      "namedRegex": "^/learn/(?<nxtPcategorySlug>[^/]+?)/(?<nxtPtopicSlug>[^/]+?)/(?<nxtPsnippetSlug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/practice/[snippetSlug]",
+      "regex": "^/practice/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPsnippetSlug": "nxtPsnippetSlug"
+      },
+      "namedRegex": "^/practice/(?<nxtPsnippetSlug>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/auth/init",
+      "regex": "^/api/auth/init(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/init(?:/)?$"
+    },
+    {
+      "page": "/api/auth/login",
+      "regex": "^/api/auth/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/login(?:/)?$"
+    },
+    {
+      "page": "/api/auth/logout",
+      "regex": "^/api/auth/logout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/logout(?:/)?$"
+    },
+    {
+      "page": "/api/auth/register",
+      "regex": "^/api/auth/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/register(?:/)?$"
+    },
+    {
+      "page": "/api/evaluate",
+      "regex": "^/api/evaluate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/evaluate(?:/)?$"
+    },
+    {
+      "page": "/api/progress/stats",
+      "regex": "^/api/progress/stats(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/progress/stats(?:/)?$"
+    },
+    {
+      "page": "/api/roadmap",
+      "regex": "^/api/roadmap(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/roadmap(?:/)?$"
+    },
+    {
+      "page": "/api/sync",
+      "regex": "^/api/sync(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/sync(?:/)?$"
+    },
+    {
+      "page": "/api/webhooks/github",
+      "regex": "^/api/webhooks/github(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/webhooks/github(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/learn",
+      "regex": "^/learn(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/learn(?:/)?$"
+    },
+    {
+      "page": "/manifest.webmanifest",
+      "regex": "^/manifest\\.webmanifest(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/manifest\\.webmanifest(?:/)?$"
+    },
+    {
+      "page": "/practice",
+      "regex": "^/practice(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/practice(?:/)?$"
+    },
+    {
+      "page": "/profile",
+      "regex": "^/profile(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/profile(?:/)?$"
+    },
+    {
+      "page": "/roadmap",
+      "regex": "^/roadmap(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/roadmap(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}
