@@ -1,0 +1,194 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── CONTENT MODELS ───────────────────────────────────────────────────────────
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  icon        String?
+  color       String?  // hex color for roadmap node coloring
+  order       Int      @default(0)
+  topics      Topic[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Topic {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id])
+  order       Int       @default(0)
+  snippets    Snippet[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([categoryId])
+}
+
+model Snippet {
+  id               String    @id @default(cuid())
+  title            String
+  slug             String    @unique
+  topicId          String
+  topic            Topic     @relation(fields: [topicId], references: [id])
+  difficulty       Difficulty @default(BEGINNER)
+  estimatedMinutes Int       @default(10)
+  order            Int       @default(0)
+
+  // Raw source content (from repo)
+  sourceReadme     String?   @db.Text
+  sourceCode       Json      @default("[]") // [{filename, content, language}]
+  sourcePath       String    // original repo path (used as upsert key)
+  sourceHash       String?   // sha256 of source content for change detection
+
+  // AI-generated lesson content (null until generated)
+  overview         String?   @db.Text
+  theory           String?   @db.Text
+  walkthrough      String?   @db.Text
+  useCases         String?   @db.Text
+  commonMistakes   String?   @db.Text
+  bestPractices    String?   @db.Text
+  practicePrompt   String?   @db.Text
+  practiceSolution String?   @db.Text
+
+  // Graph metadata
+  prerequisites    String[]  @default([]) // sibling snippet slugs
+  relatedSlugs     String[]  @default([])
+  tags             String[]  @default([])
+
+  // Relations
+  progress         UserSnippetProgress[]
+  bookmarks        Bookmark[]
+  practiceAttempts PracticeAttempt[]
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([topicId])
+  @@index([sourcePath])
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+// ─── USER MODELS ──────────────────────────────────────────────────────────────
+
+model User {
+  id           String    @id @default(cuid())
+  anonymousId  String?   @unique // UUID stored in httpOnly cookie for anon users
+  email        String?   @unique
+  name         String?
+  passwordHash String?
+  avatarUrl    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  progress     UserSnippetProgress[]
+  bookmarks    Bookmark[]
+  attempts     PracticeAttempt[]
+  streaks      LearningStreak[]
+  sessions     Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+}
+
+model UserSnippetProgress {
+  id          String         @id @default(cuid())
+  userId      String
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  snippetId   String
+  snippet     Snippet        @relation(fields: [snippetId], references: [id])
+  status      ProgressStatus @default(NOT_STARTED)
+  score       Int?           // 0-100
+  timeSpent   Int            @default(0) // seconds
+  completedAt DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@unique([userId, snippetId])
+  @@index([userId])
+  @@index([snippetId])
+}
+
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  MASTERED
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  snippetId String
+  snippet   Snippet  @relation(fields: [snippetId], references: [id])
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, snippetId])
+  @@index([userId])
+}
+
+model PracticeAttempt {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  snippetId String
+  snippet   Snippet  @relation(fields: [snippetId], references: [id])
+  code      String   @db.Text
+  score     Int?     // 0-100
+  feedback  Json?    // AI evaluation result
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([snippetId])
+}
+
+model LearningStreak {
+  id     String   @id @default(cuid())
+  userId String
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date   DateTime @db.Date
+
+  @@unique([userId, date])
+  @@index([userId])
+}
+
+// ─── SYNC / SYSTEM ────────────────────────────────────────────────────────────
+
+model ContentSync {
+  id              String    @id @default(cuid())
+  commitHash      String?
+  status          String    // "success" | "failed" | "in_progress"
+  snippetsNew     Int       @default(0)
+  snippetsUpdated Int       @default(0)
+  error           String?   @db.Text
+  startedAt       DateTime  @default(now())
+  completedAt     DateTime?
+}

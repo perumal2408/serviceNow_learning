@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ServiceNow Learning Platform
 
-## Getting Started
+Interactive learning platform for 1000+ ServiceNow snippets, built with Next.js 15.
 
-First, run the development server:
+## Quick Start
+
+### Prerequisites
+- Node.js 20+
+- PostgreSQL (`brew install postgresql@15 && brew services start postgresql@15`)
+- Ollama (`brew install ollama && ollama serve`)
+- Models: `ollama pull llama3:8b && ollama pull deepseek-coder:6.7b`
+
+### Setup
 
 ```bash
+# 1. Create database
+createdb servicenow_learning
+
+# 2. Push schema
+npm run db:push
+
+# 3. Ingest content (parse only, fast - no AI)
+npm run ingest:skip-ai
+
+# 4. Or full AI-powered ingestion (8-16hrs for 1000+ snippets)
+npm run ingest
+
+# 5. Start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
+- **Roadmap**: React Flow graph (desktop) / accordion tree (tablet) / vertical step list (mobile)
+- **Lessons**: AI-generated overview, theory, walkthrough, use cases, mistakes, best practices
+- **Practice**: Monaco editor (desktop) + CodeMirror 6 (mobile) + Ollama AI evaluation
+- **Dashboard**: Progress rings, category bars, streak tracker, activity feed
+- **Auth**: Anonymous-first (no sign-up friction) with optional email/password account
+- **PWA**: Installable, offline reading, background sync
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Key Commands
+```bash
+npm run dev           # Start dev server
+npm run db:push       # Push schema to database
+npm run db:studio     # Open Prisma Studio
+npm run ingest        # Full ingestion with AI content
+npm run ingest:skip-ai # Parse only (no Ollama required)
+npm run ingest:resume  # Resume interrupted ingestion
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Responsive Breakpoints
+- Mobile < 768px: Bottom nav + vertical roadmap + collapsible lesson sections
+- Tablet 768-1023px: Overlay sidebar + tree roadmap
+- Desktop >= 1024px: Fixed sidebar + React Flow graph + 2-column lesson
