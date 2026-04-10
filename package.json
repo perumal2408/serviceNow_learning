@@ -13,7 +13,10 @@
     "db:studio": "prisma studio",
     "ingest": "npx tsx scripts/ingest.ts",
     "ingest:skip-ai": "npx tsx scripts/ingest.ts --skip-ai",
-    "ingest:resume": "npx tsx scripts/ingest.ts --resume"
+    "ingest:resume": "npx tsx scripts/ingest.ts --resume",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.5",
@@ -22,6 +25,7 @@
     "@codemirror/view": "^6.41.0",
     "@ducanh2912/next-pwa": "^10.2.9",
     "@monaco-editor/react": "^4.7.0",
+    "@opennextjs/cloudflare": "^1.19.0",
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
     "@radix-ui/react-accordion": "^1.2.12",
@@ -47,12 +51,12 @@
     "framer-motion": "^12.38.0",
     "jose": "^6.2.2",
     "lucide-react": "^1.8.0",
-    "next": "15.1.6",
+    "next": "^16.2.3",
     "next-themes": "^0.4.6",
     "pg": "^8.20.0",
     "prisma": "^7.7.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "shiki": "^4.0.2",
     "tailwind-merge": "^3.5.0",
     "tailwindcss-animate": "^1.0.7",
@@ -69,6 +73,7 @@
     "eslint-config-next": "15.1.6",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.81.1"
   }
 }
